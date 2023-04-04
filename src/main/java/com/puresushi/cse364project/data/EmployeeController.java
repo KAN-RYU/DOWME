@@ -1,9 +1,7 @@
 package com.puresushi.cse364project.data;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import com.puresushi.cse364project.EmployeeNotFoundException;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,6 +16,12 @@ public class EmployeeController {
     @GetMapping("/employees")
     List<Employee> allEmployees() {
         return db.findAll();
+    }
+
+    // Get One items
+    @GetMapping("/employees/{id}")
+    Employee oneEmployee(@PathVariable Long id) {
+        return db.findById(id).orElseThrow(() -> new EmployeeNotFoundException(id));
     }
 
     // Add new item
