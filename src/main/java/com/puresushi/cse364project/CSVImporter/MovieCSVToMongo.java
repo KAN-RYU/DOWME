@@ -30,13 +30,13 @@ public class MovieCSVToMongo {
     private MongoTemplate mongoTemplate;
 
     @Bean
-    public Job readMovieCSVFile() {
-        return new JobBuilder("readMovieCSVFile").incrementer(new RunIdIncrementer()).start(step1()).build();
+    public Job readMovieCSVFile(JobRepository jobRepository) {
+        return new JobBuilder("readMovieCSVFile", jobRepository).incrementer(new RunIdIncrementer()).start(step1(jobRepository)).build();
     }
 
     @Bean
-    public Step step1() {
-        return new StepBuilder("step1").<Movie, Movie>chunk(10).reader(reader()).writer(writer()).build();
+    public Step step1(JobRepository jobRepository) {
+        return new StepBuilder("step1", jobRepository).<Movie, Movie>chunk(10).reader(reader()).writer(writer()).build();
     }
 
     @Bean
