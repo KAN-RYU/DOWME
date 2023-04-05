@@ -8,7 +8,7 @@ import java.util.Objects;
 @Document
 public class Employee {
     @Id
-    private String id;
+    private Long id;
     private String name;
     private String role;
 
@@ -20,7 +20,7 @@ public class Employee {
         this.role = name;
     }
 
-    public String getId() {
+    public Long getId() {
         return this.id;
     }
 
@@ -32,7 +32,7 @@ public class Employee {
         return this.role;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

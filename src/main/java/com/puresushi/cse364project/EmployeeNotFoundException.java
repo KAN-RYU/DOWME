@@ -1,7 +1,7 @@
 package com.puresushi.cse364project;
 
 public class EmployeeNotFoundException extends RuntimeException{
-    public EmployeeNotFoundException(String id) {
+    public EmployeeNotFoundException(Long id) {
         super("Could not find employee id=" + id);
     }
 }
