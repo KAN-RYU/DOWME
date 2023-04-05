@@ -43,9 +43,11 @@ public class RatingController {
     public Rating newRating(@RequestBody Rating newRating) {
         newRating.setRatingId(sequenceGeneratorService.generateSequence(Movie.SEQUENCE_NAME));
         Movie m = movieRepository.findByMovieId(newRating.getMovieId());
-        m.setNumberRate(m.getNumberRate() + 1);
-        m.setTotalRating(m.getTotalRating() + newRating.getRating());
-        movieRepository.save(m);
+        if (m != null) {
+            m.setNumberRate(m.getNumberRate() + 1);
+            m.setTotalRating(m.getTotalRating() + newRating.getRating());
+            movieRepository.save(m);
+        }
         return ratingRepository.save(newRating);
     }
 
