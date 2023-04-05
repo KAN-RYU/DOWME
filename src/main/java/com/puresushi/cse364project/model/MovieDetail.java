@@ -4,15 +4,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 @Entity
-public class MovieDomain {
+public class MovieDetail {
     private @Id Long movieId;
     private String title;
     private String genre;
 
-    MovieDomain() {
+    MovieDetail() {
     }
 
-    public MovieDomain(String title, String genre) {
+    public MovieDetail(String title, String genre) {
         this.title = title;
         this.genre = genre;
     }
