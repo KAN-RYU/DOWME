@@ -40,8 +40,8 @@ public class RatingController {
         for (Movie m : movieList) {
             if (m.getAverageRating() >= rating) {
                 JSONObject t = new JSONObject();
+                t.appendField("genres", m.getGenres());
                 t.appendField("title", m.getTitle());
-                t.appendField("genres", m.getTitle());
                 resultList.add(t);
             }
         }
