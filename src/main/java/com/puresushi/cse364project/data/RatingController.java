@@ -41,7 +41,7 @@ public class RatingController {
 
     @PostMapping("/ratings")
     public Rating newRating(@RequestBody Rating newRating) {
-        newRating.setRatingId(sequenceGeneratorService.generateSequence(Movie.SEQUENCE_NAME));
+        newRating.setRatingId(sequenceGeneratorService.generateSequence(Rating.SEQUENCE_NAME));
         Movie m = movieRepository.findByMovieId(newRating.getMovieId());
         if (m != null) {
             m.setNumberRate(m.getNumberRate() + 1);
@@ -56,7 +56,7 @@ public class RatingController {
 
         Rating m = ratingRepository.findByRatingId(ratingId);
         if (m == null) {
-            newRating.setRatingId(sequenceGeneratorService.generateSequence(Movie.SEQUENCE_NAME));
+            newRating.setRatingId(sequenceGeneratorService.generateSequence(Rating.SEQUENCE_NAME));
             return ratingRepository.save(newRating);
         }
         m.setMovieId(newRating.getMovieId());
