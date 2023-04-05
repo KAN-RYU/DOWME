@@ -35,7 +35,7 @@ class LoadDatabase {
             RatingsCSVToMongo ratingsCSVToMongo = new RatingsCSVToMongo(movieRepository, ratingRepository);
             ratingsCSVToMongo.readRatingCSV();
 
-            List<Rating> ratingList = ratingRepository.findAllByMovieIdAsc();
+            List<Rating> ratingList = ratingRepository.findByOrderByMovieIdAsc();
             int movieIndex = 0;
             Movie m = new Movie(0, "tmp", "tmp");
             for (Rating rating : ratingList) {
