@@ -1,6 +1,7 @@
 package com.puresushi.cse364project.data;
 
 
+import com.puresushi.cse364project.MovieIdNotExistException;
 import com.puresushi.cse364project.RatingRangeExceedException;
 import com.puresushi.cse364project.Utils.SequenceGeneratorService;
 import net.minidev.json.JSONArray;
@@ -57,6 +58,9 @@ public class RatingController {
             m.setNumberRate(m.getNumberRate() + 1);
             m.setTotalRating(m.getTotalRating() + newRating.getRating());
             movieRepository.save(m);
+        }
+        else {
+            throw new MovieIdNotExistException(newRating.getMovieId());
         }
         return ratingRepository.save(newRating);
     }
