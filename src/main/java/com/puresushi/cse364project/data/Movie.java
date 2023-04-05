@@ -26,6 +26,7 @@ public class Movie {
     }
 
     public Long getAverageRating() {
+        if (numberRate == 0) return 0L;
         return totalRating / numberRate;
     }
 }
