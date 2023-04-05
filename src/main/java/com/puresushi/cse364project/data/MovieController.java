@@ -2,9 +2,7 @@ package com.puresushi.cse364project.data;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,5 +24,11 @@ public class MovieController {
     @GetMapping("/movies/{movieId}")
     public Movie getMovie(@PathVariable int movieId) {
         return movieRepository.findByMovieId(movieId);
+    }
+
+    // Add new item
+    @PostMapping("/movies")
+    public Movie newMovie(@RequestBody Movie newMovie) {
+        return movieRepository.save(newMovie);
     }
 }
