@@ -1,10 +1,8 @@
 package com.puresushi.cse364project;
 
 import com.puresushi.cse364project.CSVImporter.MovieCSVToMongo;
-import com.puresushi.cse364project.data.Employee;
-import com.puresushi.cse364project.data.EmployeeDB;
-import com.puresushi.cse364project.data.Movie;
-import com.puresushi.cse364project.data.MovieRepository;
+import com.puresushi.cse364project.CSVImporter.RatingsCSVToMongo;
+import com.puresushi.cse364project.data.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -24,10 +22,17 @@ class LoadDatabase {
     }
 
     @Bean
-    CommandLineRunner initMongoDB(MovieRepository movieRepository) {
+    CommandLineRunner initMongoDB(MovieRepository movieRepository, RatingRepository ratingRepository) {
         return args -> {
+            log.info("Database Initializing");
+            movieRepository.deleteAll();
+            ratingRepository.deleteAll();
+            log.info("Parsing Rating data stat.");
             MovieCSVToMongo parser = new MovieCSVToMongo(movieRepository);
             parser.readMovieCSV();
+            RatingsCSVToMongo ratingsCSVToMongo = new RatingsCSVToMongo(movieRepository, ratingRepository);
+            ratingsCSVToMongo.readRatingCSV();
+            log.info("Parsing Rating data done.");
         };
     }
 }

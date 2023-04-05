@@ -14,10 +14,16 @@ public class Movie {
     private int movieId;
     private String title;
     private String genres;
+    private Long numberRate;
+    private Long totalRating;
 
     public Movie(int movieId, String title, String genres) {
         this.movieId = movieId;
         this.title = title;
         this.genres = genres;
+    }
+
+    public Long getAverageRating() {
+        return totalRating / numberRate;
     }
 }
