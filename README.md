@@ -19,7 +19,6 @@ Before running 'sh run.sh', please create and authorize the SSH Key of the Docke
 ```
 root@<containerID>:~/project# ssh-keygen -t rsa
 root@<containerID>:~/project# vi ~/.ssh/id_rsa.pub
-
 ```
 Then, copy the content of vim editor, as SSH Key. Upload the SSH Key in your 'Setting' in github account.
 After SSH Key is uploaded in your personal account, our github repository will be accessable.
