@@ -1,6 +1,6 @@
 package com.puresushi.cse364project.data;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface EmployeeDB extends JpaRepository<Employee, Long> {
+public interface EmployeeDB extends MongoRepository<Employee, Long> {
 }
