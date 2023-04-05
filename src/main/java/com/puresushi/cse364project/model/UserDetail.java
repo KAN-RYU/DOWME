@@ -4,17 +4,17 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 @Entity
-public class UserDomain {
+public class UserDetail {
     private @Id Long userId;
     private char gender;
     private int age;
     private int occupation;
     private int zipCode;
 
-    UserDomain() {
+    UserDetail() {
     }
 
-    public UserDomain(Long userId, char gender, int age, int occupation, int zipCode) {
+    public UserDetail(Long userId, char gender, int age, int occupation, int zipCode) {
         this.gender = gender;
         this.age = age;
         this.occupation = occupation;
