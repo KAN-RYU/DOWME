@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
+import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
@@ -27,16 +29,20 @@ import java.net.MalformedURLException;
 public class MovieCSVToMongo {
 
     @Autowired
+    private JobBuilderFactory jobBuilderFactory;
+    @Autowired
+    private StepBuilderFactory stepBuilderFactory;
+    @Autowired
     private MongoTemplate mongoTemplate;
 
     @Bean
-    public Job readMovieCSVFile(JobRepository jobRepository) {
-        return new JobBuilder("readMovieCSVFile", jobRepository).incrementer(new RunIdIncrementer()).start(step1(jobRepository)).build();
+    public Job readMovieCSVFile() {
+        return jobBuilderFactory.get("readMovieCSVFile").incrementer(new RunIdIncrementer()).start(step1()).build();
     }
 
     @Bean
-    public Step step1(JobRepository jobRepository) {
-        return new StepBuilder("step1", jobRepository).<Movie, Movie>chunk(10).reader(reader()).writer(writer()).build();
+    public Step step1() {
+        return stepBuilderFactory.get("step1").<Movie, Movie>chunk(10).reader(reader()).writer(writer()).build();
     }
 
     @Bean
