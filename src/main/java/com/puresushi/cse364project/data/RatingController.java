@@ -27,9 +27,9 @@ public class RatingController {
     }
 
     @GetMapping("/ratings/{rating}")
-    public List<Movie> getRatedMovies(@PathVariable int rating) {
+    public List<String> getRatedMovies(@PathVariable int rating) {
         List<Movie> movieList = movieRepository.findAll();
-        ArrayList<Movie> resultList = new ArrayList<Movie>();
+        ArrayList<String> resultList = new ArrayList<String>();
 
         if (rating <= 0 || rating > 5) {
             throw new RatingRangeExceedException(rating);
@@ -37,7 +37,7 @@ public class RatingController {
 
         for (Movie m : movieList) {
             if (m.getAverageRating() >= rating) {
-                resultList.add(m);
+                resultList.add("{ title: " + m.getTitle() +", genres: " + m.getGenres() + "}");
             }
         }
 
