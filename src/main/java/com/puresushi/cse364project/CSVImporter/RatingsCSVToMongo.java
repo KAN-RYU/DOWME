@@ -32,7 +32,6 @@ public class RatingsCSVToMongo {
             int length = ratings.size();
 
             for (String[] ratingInfo : ratings) {
-                ratingInfo = csvReader.readNext();
                 if (index % 5000 == 0) log.info(index + " / " + length + " loading");
                 if (ratingInfo != null) {
                     int userId = Integer.parseInt(ratingInfo[0]);
