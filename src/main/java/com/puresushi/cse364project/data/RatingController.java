@@ -1,6 +1,7 @@
 package com.puresushi.cse364project.data;
 
 
+import com.puresushi.cse364project.RatingRangeExceedException;
 import com.puresushi.cse364project.Utils.SequenceGeneratorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,10 @@ public class RatingController {
     public List<Movie> getRatedMovies(@PathVariable int rating) {
         List<Movie> movieList = movieRepository.findAll();
         ArrayList<Movie> resultList = new ArrayList<Movie>();
+
+        if (rating <= 0 || rating > 5) {
+            throw new RatingRangeExceedException(rating);
+        }
 
         for (Movie m : movieList) {
             if (m.getAverageRating() >= rating) {
