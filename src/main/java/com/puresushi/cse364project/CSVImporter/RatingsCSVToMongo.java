@@ -46,6 +46,7 @@ public class RatingsCSVToMongo {
                     m.setTotalRating(m.getTotalRating() + ratingInt);
                     movieRepository.save(m);
                 }
+                index += 1;
             }
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
