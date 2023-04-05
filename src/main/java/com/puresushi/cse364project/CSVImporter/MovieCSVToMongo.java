@@ -1,6 +1,7 @@
 package com.puresushi.cse364project.CSVImporter;
 
 import com.puresushi.cse364project.data.Movie;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -54,6 +55,7 @@ public class MovieCSVToMongo {
                 setTargetType(Movie.class);
             }});
         }});
+        LoggerFactory.getLogger(MovieCSVToMongo.class).info("hello");
         return reader;
     }
 
