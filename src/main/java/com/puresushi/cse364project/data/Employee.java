@@ -1,14 +1,15 @@
 package com.puresushi.cse364project.data;
 
 import jakarta.persistence.Entity;
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 
 import java.util.Objects;
 
 @Entity
 public class Employee {
-    @Id
-    private Long id;
+
+    private @Id @GeneratedValue Long id;
     private String name;
     private String role;
 
