@@ -24,7 +24,7 @@ public class MovieCSVToMongo {
         String[] movieInfo;
 
         try {
-            CSVReader csvReader = new CSVReader(new InputStreamReader(new FileInputStream("/root/project/data/movies.csv")));
+            CSVReader csvReader = new CSVReader(new InputStreamReader(new FileInputStream("/root/project/DOWME/data/movies.csv")));
 
             do {
                 movieInfo = csvReader.readNext();
