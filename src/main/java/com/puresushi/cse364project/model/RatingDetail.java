@@ -4,16 +4,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 @Entity
-public class RatingDomain {
+public class RatingDetail {
     private @Id Long userId;
     private @Id Long movieId;
     private int rating;
     private Long timeStamp;
 
-    RatingDomain() {
+    RatingDetail() {
     }
 
-    public RatingDomain(Long userId, Long movieId, int rating, Long timeStamp) {
+    public RatingDetail(Long userId, Long movieId, int rating, Long timeStamp) {
         this.userId = userId;
         this.movieId = movieId;
         this.rating = rating;
