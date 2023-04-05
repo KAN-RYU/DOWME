@@ -20,7 +20,7 @@ public class EmployeeController {
 
     // Get One items
     @GetMapping("/employees/{id}")
-    Employee oneEmployee(@PathVariable Long id) {
+    Employee oneEmployee(@PathVariable String id) {
         return db.findById(id).orElseThrow(() -> new EmployeeNotFoundException(id));
     }
 
@@ -32,7 +32,7 @@ public class EmployeeController {
 
     // Update existed item
     @PutMapping("/employees/{id}")
-    Employee updateEmployee(@RequestBody Employee newEmployee,@PathVariable Long id) {
+    Employee updateEmployee(@RequestBody Employee newEmployee,@PathVariable String id) {
         return db.findById(id).map(employee -> {
             employee.setName(newEmployee.getName());
             employee.setRole(newEmployee.getRole());
