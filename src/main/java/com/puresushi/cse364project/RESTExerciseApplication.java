@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 
-@ComponentScan(basePackages = {"com.puresushi.cse364project.data.EmployeeDB"})
+@ComponentScan(basePackages = {"com.puresushi.cse364project.data"})
 @SpringBootApplication()
 public class RESTExerciseApplication {
     public static void main(String... args) {
