@@ -1,5 +1,6 @@
 package com.puresushi.cse364project;
 
+import com.puresushi.cse364project.CSVImporter.MovieCSVToMongo;
 import com.puresushi.cse364project.data.Employee;
 import com.puresushi.cse364project.data.EmployeeDB;
 import com.puresushi.cse364project.data.Movie;
@@ -25,7 +26,8 @@ class LoadDatabase {
     @Bean
     CommandLineRunner initMongoDB(MovieRepository movieRepository) {
         return args -> {
-            log.info("" + movieRepository.save(new Movie(1, "toy", "action")));
+            MovieCSVToMongo parser = new MovieCSVToMongo(movieRepository);
+            parser.readMovieCSV();
         };
     }
 }

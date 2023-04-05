@@ -26,6 +26,6 @@ public class MovieController {
 
     @GetMapping("/movies/{movieId}")
     public Movie getMovie(@PathVariable int movieId) {
-        return movieRepository.findAllByMovieId(movieId);
+        return movieRepository.findByMovieId(movieId);
     }
 }
