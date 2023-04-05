@@ -64,15 +64,25 @@ public class RatingController {
     @PutMapping("/ratings/update/{ratingId}")
     Rating updatRating(@RequestBody Rating newRating, @PathVariable int ratingId) {
 
-        Rating m = ratingRepository.findByRatingId(ratingId);
-        if (m == null) {
+        Rating rating = ratingRepository.findByRatingId(ratingId);
+        if (rating == null) {
             newRating.setRatingId(sequenceGeneratorService.generateSequence(Rating.SEQUENCE_NAME));
             return ratingRepository.save(newRating);
         }
-        m.setMovieId(newRating.getMovieId());
-        m.setRating(newRating.getRating());
-        m.setUserId(newRating.getUserId());
-        return ratingRepository.save(m);
+
+        Movie m = movieRepository.findByMovieId(rating.getMovieId());
+        m.setTotalRating(m.getTotalRating() - rating.getRating());
+        m.setNumberRate(m.getNumberRate() - 1);
+
+        rating.setMovieId(newRating.getMovieId());
+        rating.setRating(newRating.getRating());
+        rating.setUserId(newRating.getUserId());
+
+        Movie m2 = movieRepository.findByMovieId(rating.getMovieId());
+        m2.setTotalRating(m2.getTotalRating() + rating.getRating());
+        m2.setNumberRate(m2.getNumberRate() + 1);
+
+        return ratingRepository.save(rating);
 
     }
 }
