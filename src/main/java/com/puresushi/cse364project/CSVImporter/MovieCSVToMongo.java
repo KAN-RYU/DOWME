@@ -24,9 +24,6 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 public class MovieCSVToMongo {
     private final MovieRepository movieRepository;
 
-    @Autowired
-    private MongoOperations mongoOperations;
-
     public MovieCSVToMongo(MovieRepository movieRepository) {
         this.movieRepository = movieRepository;
     }
@@ -50,7 +47,6 @@ public class MovieCSVToMongo {
                         movieRepository.save(movie);
                     }
                 }
-                mongoOperations.findAndModify(query(where("_id").is(Movie.SEQUENCE_NAME)), new Update().set("seq", movieInfo[0]), options().returnNew(true).upsert(true), DatabaseSequence.class);
             }while (movieInfo != null);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);

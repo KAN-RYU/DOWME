@@ -2,6 +2,7 @@ package com.puresushi.cse364project;
 
 import com.puresushi.cse364project.CSVImporter.MovieCSVToMongo;
 import com.puresushi.cse364project.CSVImporter.RatingsCSVToMongo;
+import com.puresushi.cse364project.Utils.DatabaseSequence;
 import com.puresushi.cse364project.data.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,8 +11,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Update;
 
 import java.util.List;
+
+import static org.springframework.data.mongodb.core.FindAndModifyOptions.options;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
 
 @Configuration
 class LoadDatabase {
@@ -59,6 +65,8 @@ class LoadDatabase {
                 m.setNumberRate(m.getNumberRate() + 1);
                 m.setTotalRating(m.getTotalRating() + rating.getRating());
             }
+            mongoOperations.findAndModify(query(where("_id").is(Movie.SEQUENCE_NAME)), new Update().set("seq", 3952), options().returnNew(true).upsert(true), DatabaseSequence.class);
+            mongoOperations.findAndModify(query(where("_id").is(Rating.SEQUENCE_NAME)), new Update().set("seq", 1000209), options().returnNew(true).upsert(true), DatabaseSequence.class);
             log.info("Parsing Rating data done.");
         };
     }
