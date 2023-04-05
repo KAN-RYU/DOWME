@@ -3,6 +3,8 @@ package com.puresushi.cse364project.data;
 
 import com.puresushi.cse364project.RatingRangeExceedException;
 import com.puresushi.cse364project.Utils.SequenceGeneratorService;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +29,9 @@ public class RatingController {
     }
 
     @GetMapping("/ratings/{rating}")
-    public List<String> getRatedMovies(@PathVariable int rating) {
+    public JSONArray getRatedMovies(@PathVariable int rating) {
         List<Movie> movieList = movieRepository.findAll();
-        ArrayList<String> resultList = new ArrayList<String>();
+        JSONArray resultList = new JSONArray();
 
         if (rating <= 0 || rating > 5) {
             throw new RatingRangeExceedException(rating);
@@ -37,7 +39,10 @@ public class RatingController {
 
         for (Movie m : movieList) {
             if (m.getAverageRating() >= rating) {
-                resultList.add("{ title: " + m.getTitle() +", genres: " + m.getGenres() + "}");
+                JSONObject t = new JSONObject();
+                t.appendField("title", m.getTitle());
+                t.appendField("genres", m.getTitle());
+                resultList.add(t);
             }
         }
 
