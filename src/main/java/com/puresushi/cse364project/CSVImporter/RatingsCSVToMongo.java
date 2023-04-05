@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RatingsCSVToMongo {
@@ -28,18 +29,20 @@ public class RatingsCSVToMongo {
         try {
             CSVReader csvReader = new CSVReader(new InputStreamReader(new FileInputStream("/root/project/DOWME/data/ratings.csv")));
             List<String[]> ratings = csvReader.readAll();
+            ArrayList<Rating> newRatings = new ArrayList<Rating>();
             int index = 0;
             int length = ratings.size();
 
             for (String[] ratingInfo : ratings) {
-                if (index % 5000 == 0) log.info(index + " / " + length + " loading");
+                if (index % 100000 == 0) log.info(index + " / " + length + " loading");
                 if (ratingInfo != null) {
                     int userId = Integer.parseInt(ratingInfo[0]);
                     int movieId = Integer.parseInt(ratingInfo[1]);
                     int ratingInt = Integer.parseInt(ratingInfo[2]);
                     int timestamp = Integer.parseInt(ratingInfo[3]);
                     Rating rating = new Rating(userId, movieId, ratingInt, timestamp);
-                    ratingRepository.save(rating);
+                    newRatings.add(rating);
+//                    ratingRepository.save(rating);
 //                    Movie m = movieRepository.findByMovieId(movieId);
 //                    m.setNumberRate(m.getNumberRate() + 1);
 //                    m.setTotalRating(m.getTotalRating() + ratingInt);
@@ -47,6 +50,7 @@ public class RatingsCSVToMongo {
                 }
                 index += 1;
             }
+            ratingRepository.insert(newRatings);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (CsvValidationException e) {

@@ -44,7 +44,7 @@ class LoadDatabase {
                         movieRepository.save(m);
                     }
                     movieIndex += 1;
-//                    if (movieIndex % 1000 == 0) log.info(index + " / " + length + " loading");
+                    log.info(movieIndex + " loading");
                     m = movieRepository.findByMovieId(movieIndex);
                 }
                 m.setNumberRate(m.getNumberRate() + 1);
