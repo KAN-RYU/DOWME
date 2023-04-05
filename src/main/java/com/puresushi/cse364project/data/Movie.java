@@ -3,6 +3,7 @@ package com.puresushi.cse364project.data;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
@@ -11,6 +12,7 @@ public class Movie {
 
     @Id
     private String id;
+    @Indexed
     private int movieId;
     private String title;
     private String genres;
