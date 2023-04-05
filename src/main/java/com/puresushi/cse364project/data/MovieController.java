@@ -36,4 +36,18 @@ public class MovieController {
         newMovie.setMovieId(sequenceGeneratorService.generateSequence(Movie.SEQUENCE_NAME));
         return movieRepository.save(newMovie);
     }
+
+    @PutMapping("/movies/{movieId}")
+    Movie updateEmployee(@RequestBody Movie newMovie, @PathVariable int movieId) {
+
+        Movie m = movieRepository.findByMovieId(movieId);
+        if (m == null) {
+            newMovie.setMovieId(sequenceGeneratorService.generateSequence(Movie.SEQUENCE_NAME));
+            return movieRepository.save(newMovie);
+        }
+        m.setTitle(newMovie.getTitle());
+        m.setGenres(newMovie.getGenres());
+        return movieRepository.save(m);
+
+    }
 }
