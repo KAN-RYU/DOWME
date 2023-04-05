@@ -9,6 +9,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
+
 @Configuration
 class LoadDatabase {
     private static final Logger log = LoggerFactory.getLogger(LoadDatabase.class);
@@ -27,11 +29,27 @@ class LoadDatabase {
             log.info("Database Initializing");
             movieRepository.deleteAll();
             ratingRepository.deleteAll();
-            log.info("Parsing Rating data stat.");
+            log.info("Parsing Rating data start.");
             MovieCSVToMongo parser = new MovieCSVToMongo(movieRepository);
             parser.readMovieCSV();
             RatingsCSVToMongo ratingsCSVToMongo = new RatingsCSVToMongo(movieRepository, ratingRepository);
             ratingsCSVToMongo.readRatingCSV();
+
+            List<Rating> ratingList = ratingRepository.findAllByMovieIdAsc();
+            int movieIndex = 0;
+            Movie m = new Movie(0, "tmp", "tmp");
+            for (Rating rating : ratingList) {
+                if (rating.getMovieId() != movieIndex) {
+                    if (movieIndex != 0) {
+                        movieRepository.save(m);
+                    }
+                    movieIndex += 1;
+//                    if (movieIndex % 1000 == 0) log.info(index + " / " + length + " loading");
+                    m = movieRepository.findByMovieId(movieIndex);
+                }
+                m.setNumberRate(m.getNumberRate() + 1);
+                m.setTotalRating(m.getTotalRating() + rating.getRating());
+            }
             log.info("Parsing Rating data done.");
         };
     }

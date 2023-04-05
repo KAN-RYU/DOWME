@@ -40,10 +40,10 @@ public class RatingsCSVToMongo {
                     int timestamp = Integer.parseInt(ratingInfo[3]);
                     Rating rating = new Rating(userId, movieId, ratingInt, timestamp);
                     ratingRepository.save(rating);
-                    Movie m = movieRepository.findByMovieId(movieId);
-                    m.setNumberRate(m.getNumberRate() + 1);
-                    m.setTotalRating(m.getTotalRating() + ratingInt);
-                    movieRepository.save(m);
+//                    Movie m = movieRepository.findByMovieId(movieId);
+//                    m.setNumberRate(m.getNumberRate() + 1);
+//                    m.setTotalRating(m.getTotalRating() + ratingInt);
+//                    movieRepository.save(m);
                 }
                 index += 1;
             }
