@@ -21,6 +21,8 @@ public class Movie {
         this.movieId = movieId;
         this.title = title;
         this.genres = genres;
+        this.numberRate = 0L;
+        this.totalRating = 0L;
     }
 
     public Long getAverageRating() {
