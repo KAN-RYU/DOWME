@@ -1,4 +1,4 @@
-package com.puresushi.cse364project;
+package com.puresushi.cse364project.exception;
 
 public class RatingRangeExceedException extends RuntimeException{
     public RatingRangeExceedException(int rating) {

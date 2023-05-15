@@ -1,6 +1,6 @@
 package com.puresushi.cse364project.data;
 
-import com.puresushi.cse364project.EmployeeNotFoundException;
+import com.puresushi.cse364project.exception.EmployeeNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

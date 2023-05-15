@@ -1,4 +1,4 @@
-package com.puresushi.cse364project;
+package com.puresushi.cse364project.exception;
 
 public class EmployeeNotFoundException extends RuntimeException{
     public EmployeeNotFoundException(Long id) {
