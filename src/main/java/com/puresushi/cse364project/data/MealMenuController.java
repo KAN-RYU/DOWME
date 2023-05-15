@@ -21,19 +21,35 @@ public class MealMenuController {
     // Get meal with date
     @GetMapping("/meal/{date}")
     public List<MealMenu> getMealWithDate(@PathVariable int date) {
-        return mealMenuRepository.findByDate(date);
+        List<MealMenu> mealMenuList = mealMenuRepository.findByDate(date);
+        if (mealMenuList.isEmpty()) new MealMenuNotFoundException(String.valueOf(date));
+        return mealMenuList;
     }
 
     // Get meal with date, time
     @GetMapping("/meal/{date}/{time}")
     public List<MealMenu> getMealWithDateAndTime(@PathVariable int date, @PathVariable String time) {
-        return mealMenuRepository.findByDateAndTime(date, time);
+        List<MealMenu> mealMenuList = mealMenuRepository.findByDateAndTime(date, time);
+        if (mealMenuList.isEmpty()) new MealMenuNotFoundException(String.valueOf(date) + " " + time);
+        return mealMenuList;
     }
 
     // Get meal with date, time, restaurant
     @GetMapping("/meal/{date}/{time}/{restaurant}")
     public List<MealMenu> getMealWithDateAndTimeAndRestaurant(@PathVariable int date, @PathVariable String time, @PathVariable String restaurant) {
-        return mealMenuRepository.findByDateAndTimeAndRestaurant(date, time, restaurant);
+        List<MealMenu> mealMenuList = mealMenuRepository.findByDateAndTimeAndRestaurant(date, time, restaurant);
+        if (mealMenuList.isEmpty()) new MealMenuNotFoundException(String.valueOf(date) + " " + time + " " + restaurant);
+        return mealMenuList;
+    }
+
+    @GetMapping("/meal/{date}/{time}/{restaurant}/{category}")
+    public MealMenu getMealWithDateAndTimeAndRestaurantAndCategory(@PathVariable int date,
+                                                                   @PathVariable String time,
+                                                                   @PathVariable String restaurant,
+                                                                   @PathVariable String category) {
+        MealMenu m = mealMenuRepository.findByDateAndTimeAndRestaurantAndCategory(date, time, restaurant, category);
+        if (m == null) new MealMenuNotFoundException(String.valueOf(date) + " " + time + " " + restaurant + " " + category);
+        return m;
     }
 
     @GetMapping("/meal/search/{menu}")
