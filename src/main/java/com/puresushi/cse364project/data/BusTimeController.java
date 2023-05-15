@@ -6,10 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 public class BusTimeController {
@@ -32,6 +29,7 @@ public class BusTimeController {
         Set<String> set = new HashSet<>(result);
         result.clear();
         result.addAll(set);
+        Collections.sort(result);
 
         return result;
     }
