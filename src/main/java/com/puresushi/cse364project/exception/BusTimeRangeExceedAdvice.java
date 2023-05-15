@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.*;
 public class BusTimeRangeExceedAdvice {
     @ResponseBody
     @ExceptionHandler(BusTimeRangeExceedException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     String bustTimeRangeExceedHandler(BusTimeRangeExceedException exception) { return exception.getMessage();}
 }
