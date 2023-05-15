@@ -76,14 +76,14 @@ public class BusTimeController {
         return busTimeRepository.save(newBusTime);
     }
 
-    @DeleteMapping("/bus")
-    public BusTime deleteBusTime(@RequestBody BusTime busTime) {
-        BusTime result = busTimeRepository.findByBusIdAndTime(busTime.getBusId(), busTime.getTime());
+    @DeleteMapping("/bus/{busId}/{time}")
+    public BusTime deleteBusTime(@PathVariable String busId, @PathVariable int time) {
+        BusTime result = busTimeRepository.findByBusIdAndTime(busId, time);
         if (result != null) {
             busTimeRepository.delete(result);
             return result;
         }
-        return busTime;
+        return new BusTime(time, busId);
     }
 
 }
