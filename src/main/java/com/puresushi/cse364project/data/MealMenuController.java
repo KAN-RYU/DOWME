@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -35,4 +36,16 @@ public class MealMenuController {
         return mealMenuRepository.findByDateAndTimeAndRestaurant(date, time, restaurant);
     }
 
+    @GetMapping("/meal/search/{menu}")
+    public List<MealMenu> searchMealWithMenu(@PathVariable String menu) {
+        List<MealMenu> allMeal = mealMenuRepository.findAll();
+        List<MealMenu> result = new ArrayList<>();
+        for (MealMenu mealMenu: allMeal) {
+            if (mealMenu.getMenu().toLowerCase().contains(menu.toLowerCase().replace('+', ' '))) {
+                result.add(mealMenu);
+            }
+        }
+
+        return result;
+    }
 }
