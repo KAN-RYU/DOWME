@@ -3,6 +3,7 @@ package com.puresushi.cse364project.data;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Data
@@ -14,7 +15,8 @@ public class BusData {
         this.busId = busId;
     }
 
-    public void addTime(int time){
+    public void addTime(int time) {
         this.times.add(time);
+        Collections.sort(this.times);
     }
 }
