@@ -67,7 +67,7 @@ public class MealMenuController {
     }
 
     @PutMapping("/meal/{mealId}")
-    public MealMenu updateMealMenu(@RequestBody MealMenu newMealMenu, @PathVariable Long mealMenuId) {
+    public MealMenu updateMealMenu(@RequestBody MealMenu newMealMenu, @PathVariable String mealMenuId) {
         MealMenu m = mealMenuRepository.findById(mealMenuId).orElseThrow(() -> new MealMenuNotFoundException(mealMenuId));
         m.setMenu(newMealMenu.getMenu());
         m.setDate(newMealMenu.getDate());
