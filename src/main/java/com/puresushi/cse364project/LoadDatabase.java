@@ -79,4 +79,11 @@ class LoadDatabase {
             log.info("Parsing Meal Menu End");
         };
     }
+
+    @Bean
+    CommandLineRunner initAttendanceUserDB(AttendanceUserRepository attendanceUserRepository) {
+        return args -> {
+            attendanceUserRepository.deleteAll();
+        };
+    }
 }
