@@ -3,9 +3,7 @@ package com.puresushi.cse364project.CSVImporter;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import com.puresushi.cse364project.data.BusTime;
-import com.puresushi.cse364project.data.BusTimeController;
 import com.puresushi.cse364project.data.BusTimeRepository;
-import com.puresushi.cse364project.data.Movie;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

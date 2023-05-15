@@ -1,6 +1,7 @@
 package com.puresushi.cse364project;
 
 import com.puresushi.cse364project.CSVImporter.BusTimeCSVToMongo;
+import com.puresushi.cse364project.CSVImporter.MealMenuCSVToMongo;
 import com.puresushi.cse364project.CSVImporter.MovieCSVToMongo;
 import com.puresushi.cse364project.CSVImporter.RatingsCSVToMongo;
 import com.puresushi.cse364project.Utils.DatabaseSequence;
@@ -48,26 +49,26 @@ class LoadDatabase {
             RatingsCSVToMongo ratingsCSVToMongo = new RatingsCSVToMongo(movieRepository, ratingRepository);
             ratingsCSVToMongo.readRatingCSV();
 
-            List<Rating> ratingList = ratingRepository.findByOrderByMovieIdAsc();
-            int movieIndex = 0;
-            Movie m = new Movie(0, "tmp", "tmp");
-            for (Rating rating : ratingList) {
-                if (rating.getMovieId() != movieIndex) {
-                    if (movieIndex != 0) {
-                        movieRepository.save(m);
-                    }
-                    do {
-                        movieIndex += 1;
-                        m = movieRepository.findByMovieId(movieIndex);
-                        if (movieIndex > 3952) break;
-                    } while (m == null);
-                    if (movieIndex > 3952) break;
-                }
-                m.setNumberRate(m.getNumberRate() + 1);
-                m.setTotalRating(m.getTotalRating() + rating.getRating());
-            }
-            mongoOperations.findAndModify(query(where("_id").is(Movie.SEQUENCE_NAME)), new Update().set("seq", 3952), options().returnNew(true).upsert(true), DatabaseSequence.class);
-            mongoOperations.findAndModify(query(where("_id").is(Rating.SEQUENCE_NAME)), new Update().set("seq", 1000209), options().returnNew(true).upsert(true), DatabaseSequence.class);
+//            List<Rating> ratingList = ratingRepository.findByOrderByMovieIdAsc();
+//            int movieIndex = 0;
+//            Movie m = new Movie(0, "tmp", "tmp");
+//            for (Rating rating : ratingList) {
+//                if (rating.getMovieId() != movieIndex) {
+//                    if (movieIndex != 0) {
+//                        movieRepository.save(m);
+//                    }
+//                    do {
+//                        movieIndex += 1;
+//                        m = movieRepository.findByMovieId(movieIndex);
+//                        if (movieIndex > 3952) break;
+//                    } while (m == null);
+//                    if (movieIndex > 3952) break;
+//                }
+//                m.setNumberRate(m.getNumberRate() + 1);
+//                m.setTotalRating(m.getTotalRating() + rating.getRating());
+//            }
+//            mongoOperations.findAndModify(query(where("_id").is(Movie.SEQUENCE_NAME)), new Update().set("seq", 3952), options().returnNew(true).upsert(true), DatabaseSequence.class);
+//            mongoOperations.findAndModify(query(where("_id").is(Rating.SEQUENCE_NAME)), new Update().set("seq", 1000209), options().returnNew(true).upsert(true), DatabaseSequence.class);
             log.info("Parsing Rating data done.");
         };
     }
@@ -82,6 +83,19 @@ class LoadDatabase {
             parser.readBusTimeCSV();
 
             log.info("Parsing Bus Timetable End");
+        };
+    }
+
+    @Bean
+    CommandLineRunner initMealMenuDB(MealMenuRepository mealMenuRepository) {
+        return args -> {
+            log.info(("Meal Menu initializing"));
+            mealMenuRepository.deleteAll();
+            log.info("Parsing Meal Menu Start");
+            MealMenuCSVToMongo parser = new MealMenuCSVToMongo(mealMenuRepository);
+            parser.readMealMenuCSV();
+
+            log.info("Parsing Meal Menu End");
         };
     }
 }
