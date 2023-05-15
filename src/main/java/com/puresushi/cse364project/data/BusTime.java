@@ -11,11 +11,11 @@ public class BusTime {
 
     @Id
     private String id;
-    private String bus;
+    private String busId;
     private int time;
 
     public BusTime(int time, String bus) {
         this.time = time;
-        this.bus = bus;
+        this.busId = bus;
     }
 }
