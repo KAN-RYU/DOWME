@@ -1,5 +1,6 @@
 package com.puresushi.cse364project.data;
 
+import com.puresushi.cse364project.exception.BusIdNotExistException;
 import com.puresushi.cse364project.exception.BusTimeRangeExceedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +38,7 @@ public class BusTimeController {
     @GetMapping("/bus/times/{busId}")
     public BusData getBusData(@PathVariable String busId) {
         List<BusTime> busTimeList = busTimeRepository.findByBusId(busId);
+        if (busTimeList.isEmpty()) throw new BusIdNotExistException(busId);
         BusData result = new BusData(busId);
         for (BusTime busTime: busTimeList) {
             result.addTime(busTime.getTime());
