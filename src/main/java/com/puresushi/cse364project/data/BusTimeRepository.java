@@ -7,5 +7,5 @@ import java.util.List;
 
 @Repository
 public interface BusTimeRepository extends MongoRepository<BusTime, String> {
-    List<BusTime> findByBus(String bus);
+    List<BusTime> findByBusId(String busId);
 }

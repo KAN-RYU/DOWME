@@ -18,7 +18,7 @@ public class BusTimeController {
 
     @GetMapping("/bus/{busId}")
     public BusData getBusData(@PathVariable String busId) {
-        List<BusTime> busTimeList = busTimeRepository.findByBus(busId);
+        List<BusTime> busTimeList = busTimeRepository.findByBusId(busId);
         BusData result = new BusData(busId);
         for (BusTime busTime: busTimeList) {
             result.addTime(busTime.getTime());
