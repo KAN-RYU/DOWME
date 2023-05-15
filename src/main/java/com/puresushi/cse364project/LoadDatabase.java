@@ -36,22 +36,22 @@ class LoadDatabase {
         };
     }
 
-    @Bean
-    CommandLineRunner initMongoDB(MovieRepository movieRepository, RatingRepository ratingRepository) {
-        return args -> {
-            log.info("Database Initializing");
-            mongoOperations.dropCollection("database_sequences");
-            movieRepository.deleteAll();
-            ratingRepository.deleteAll();
-            log.info("Parsing Rating data start.");
-            MovieCSVToMongo parser = new MovieCSVToMongo(movieRepository);
-            parser.readMovieCSV();
-            RatingsCSVToMongo ratingsCSVToMongo = new RatingsCSVToMongo(movieRepository, ratingRepository);
-            ratingsCSVToMongo.readRatingCSV();
-
-            log.info("Parsing Rating data done.");
-        };
-    }
+//    @Bean
+//    CommandLineRunner initMongoDB(MovieRepository movieRepository, RatingRepository ratingRepository) {
+//        return args -> {
+//            log.info("Database Initializing");
+//            mongoOperations.dropCollection("database_sequences");
+//            movieRepository.deleteAll();
+//            ratingRepository.deleteAll();
+//            log.info("Parsing Rating data start.");
+//            MovieCSVToMongo parser = new MovieCSVToMongo(movieRepository);
+//            parser.readMovieCSV();
+//            RatingsCSVToMongo ratingsCSVToMongo = new RatingsCSVToMongo(movieRepository, ratingRepository);
+//            ratingsCSVToMongo.readRatingCSV();
+//
+//            log.info("Parsing Rating data done.");
+//        };
+//    }
 
     @Bean
     CommandLineRunner initBusTimeDB(BusTimeRepository busTimeRepository) {
