@@ -17,7 +17,7 @@ public class MealMenuCSVToMongo {
 
     public void readMealMenuCSV() {
         try {
-            CSVReader csvReader = new CSVReader(new InputStreamReader(new FileInputStream("/root/project/DOWME/data/menu.csv")));
+            CSVReader csvReader = new CSVReader(new InputStreamReader(new FileInputStream("./data/menu.csv")));
 
             do {
                 String[] mealMenuTable = csvReader.readNext();

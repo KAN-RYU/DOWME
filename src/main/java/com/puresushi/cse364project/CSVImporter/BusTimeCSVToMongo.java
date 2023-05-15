@@ -17,7 +17,7 @@ public class BusTimeCSVToMongo {
 
     public void readBusTimeCSV() {
         try {
-            CSVReader csvReader = new CSVReader(new InputStreamReader(new FileInputStream("/root/project/DOWME/data/bustime.csv")));
+            CSVReader csvReader = new CSVReader(new InputStreamReader(new FileInputStream("./data/bustime.csv")));
 
             do {
                 String[] busTimetable = csvReader.readNext();

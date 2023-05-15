@@ -33,6 +33,7 @@ class LoadDatabase {
         return args -> {
             log.info("" + db.save(new Employee("Kwon", "Student") ));
             log.info("" + db.save(new Employee("Jun", "Student") ));
+            log.info(System.getProperty("user.dir"));
         };
     }
 
