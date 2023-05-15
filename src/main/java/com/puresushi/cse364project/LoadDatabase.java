@@ -1,5 +1,6 @@
 package com.puresushi.cse364project;
 
+import com.puresushi.cse364project.CSVImporter.BusTimeCSVToMongo;
 import com.puresushi.cse364project.CSVImporter.MovieCSVToMongo;
 import com.puresushi.cse364project.CSVImporter.RatingsCSVToMongo;
 import com.puresushi.cse364project.Utils.DatabaseSequence;
@@ -68,6 +69,19 @@ class LoadDatabase {
             mongoOperations.findAndModify(query(where("_id").is(Movie.SEQUENCE_NAME)), new Update().set("seq", 3952), options().returnNew(true).upsert(true), DatabaseSequence.class);
             mongoOperations.findAndModify(query(where("_id").is(Rating.SEQUENCE_NAME)), new Update().set("seq", 1000209), options().returnNew(true).upsert(true), DatabaseSequence.class);
             log.info("Parsing Rating data done.");
+        };
+    }
+
+    @Bean
+    CommandLineRunner initBusTimeDB(BusTimeRepository busTimeRepository) {
+        return args -> {
+            log.info("Bus Timetable Initializing");
+            busTimeRepository.deleteAll();
+            log.info("Parsing Bus Timetable Start");
+            BusTimeCSVToMongo parser = new BusTimeCSVToMongo(busTimeRepository);
+            parser.readBusTimeCSV();
+
+            log.info("Parsing Bus Timetable End");
         };
     }
 }
