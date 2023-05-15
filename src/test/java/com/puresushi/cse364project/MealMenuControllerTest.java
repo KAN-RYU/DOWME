@@ -33,18 +33,18 @@ public class MealMenuControllerTest {
         assertNotNull(mvc);
     }
 
-//    @Test
-//    public void testNewMealMenu() throws Exception {
-//        String url = "/meal";
-//        MealMenu menu = new MealMenu(230522, "Lunch", "Korean", "Dormitory",
-//                "rice / kimchi");
-//        String json = new ObjectMapper().writeValueAsString(menu);
-//        ResultActions actions = mvc.perform(put(url).contentType(MediaType.APPLICATION_JSON)
-//                .content(json));
-//
-//        actions.andExpect(status().isOk())
-//                .andExpect((ResultMatcher) jsonPath("$", equalTo("230522")))
-//                .andDo(print());
-//    }
+    @Test
+    public void testNewMealMenu() throws Exception {
+        String url = "/meal";
+        MealMenu menu = new MealMenu(230522, "Lunch", "Korean", "Dormitory",
+                "rice / kimchi");
+        String json = new ObjectMapper().writeValueAsString(menu);
+        ResultActions actions = mvc.perform(put(url).contentType(MediaType.APPLICATION_JSON)
+                .content(json));
+
+        actions.andExpect(status().isOk())
+                .andExpect((ResultMatcher) jsonPath("$", equalTo("230522")))
+                .andDo(print());
+    }
 
 }
