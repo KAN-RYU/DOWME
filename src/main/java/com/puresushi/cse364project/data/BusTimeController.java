@@ -47,6 +47,25 @@ public class BusTimeController {
         return result;
     }
 
+    // Get 10 Bus IDs depart soon
+    @GetMapping("/bus/{currentTime}")
+    public List<BusTime> getDepartBus(@PathVariable int currentTime) {
+        List<BusTime> busTimeSortedList = busTimeRepository.findByOrderByTimeAsc();
+        List<BusTime> result = new ArrayList<>();
+        int cnt = 0;
+        for (BusTime busTime: busTimeSortedList) {
+            if (busTime.getTime() > currentTime) {
+                result.add(busTime);
+                cnt++;
+            }
+            if (cnt >= 10) {
+                break;
+            }
+        }
+
+        return result;
+    }
+
 
 
 }

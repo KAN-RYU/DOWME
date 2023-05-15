@@ -8,4 +8,5 @@ import java.util.List;
 @Repository
 public interface BusTimeRepository extends MongoRepository<BusTime, String> {
     List<BusTime> findByBusId(String busId);
+    List<BusTime> findByOrderByTimeAsc();
 }
