@@ -37,7 +37,7 @@ public class BusTimeController {
     }
 
     // Get Timetable of input bus ID
-    @GetMapping("/bus/{busId}")
+    @GetMapping("/bus/times/{busId}")
     public BusData getBusData(@PathVariable String busId) {
         List<BusTime> busTimeList = busTimeRepository.findByBusId(busId);
         BusData result = new BusData(busId);
@@ -48,7 +48,7 @@ public class BusTimeController {
     }
 
     // Get 10 Bus IDs depart soon
-    @GetMapping("/bus/{currentTime}")
+    @GetMapping("/bus/depart/{currentTime}")
     public List<BusTime> getDepartBus(@PathVariable int currentTime) {
         List<BusTime> busTimeSortedList = busTimeRepository.findByOrderByTimeAsc();
         List<BusTime> result = new ArrayList<>();
