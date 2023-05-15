@@ -65,7 +65,7 @@ public class BusTimeController {
     // Add new bus time
     @PostMapping("/bus")
     public BusTime newBusTime(@RequestBody BusTime newBusTime) {
-        if (busTimeRepository.findByBusIdByTime(newBusTime.getBusId(), newBusTime.getTime()) != null) {
+        if (busTimeRepository.findByBusIdAndTime(newBusTime.getBusId(), newBusTime.getTime()) != null) {
             return newBusTime;
         }
         int time = newBusTime.getTime();
