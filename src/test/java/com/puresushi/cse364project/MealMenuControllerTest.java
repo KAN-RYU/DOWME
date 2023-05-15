@@ -112,36 +112,47 @@ public class MealMenuControllerTest {
                 .andDo(print());
     }
 
-//    @Test
-//    public void testGetMealMenuError() throws Exception {
-//        String url = "/meal/230533/Lunch/Dormitory/Korean";
-//        MealMenu menu = new MealMenu(230522, "Lunch", "Korean", "Dormitory",
-//                "rice / kimchi");
-//        ResultActions actions = mvc.perform(get(url));
-//
-//        actions.andExpect(status().isOk())
-//                .andDo(print());
-//
-//        url = "/meal/230533/Lunch/Dormitory";
-//
-//        actions = mvc.perform(get(url));
-//
-//        actions.andExpect(status().isNotFound())
-//                .andDo(print());
-//
-//        url = "/meal/230533/Lunch";
-//
-//        actions = mvc.perform(get(url));
-//
-//        actions.andExpect(status().isNotFound())
-//                .andDo(print());
-//
-//        url = "/meal/230533";
-//
-//        actions = mvc.perform(get(url));
-//
-//        actions.andExpect(status().isNotFound())
-//                .andDo(print());
-//    }
+    @Test
+    public void testGetMealMenuError() throws Exception {
+        String url = "/meal/230533/Lunch/Dormitory/Korean";
+        MealMenu menu = new MealMenu(230522, "Lunch", "Korean", "Dormitory",
+                "rice / kimchi");
+        ResultActions actions = mvc.perform(get(url));
+
+        actions.andExpect(status().isNotFound())
+                .andDo(print());
+
+        url = "/meal/230533/Lunch/Dormitory";
+
+        actions = mvc.perform(get(url));
+
+        actions.andExpect(status().isNotFound())
+                .andDo(print());
+
+        url = "/meal/230533/Lunch";
+
+        actions = mvc.perform(get(url));
+
+        actions.andExpect(status().isNotFound())
+                .andDo(print());
+
+        url = "/meal/230533";
+
+        actions = mvc.perform(get(url));
+
+        actions.andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
+    @Test
+    public void testSearchMealWithMenu() throws Exception {
+        String url = "/meal/search/Iced+Tea";
+        ResultActions actions = mvc.perform(get(url));
+
+        actions.andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()", equalTo(11)))
+                .andExpect(jsonPath("$[2].date", equalTo(230503)))
+                .andDo(print());
+    }
 
 }
