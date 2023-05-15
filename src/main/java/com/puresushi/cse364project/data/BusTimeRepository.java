@@ -9,4 +9,5 @@ import java.util.List;
 public interface BusTimeRepository extends MongoRepository<BusTime, String> {
     List<BusTime> findByBusId(String busId);
     List<BusTime> findByOrderByTimeAsc();
+    BusTime findByBusIdByTime(String busId, int time);
 }
