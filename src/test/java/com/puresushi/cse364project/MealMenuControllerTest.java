@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.ResultMatcher;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -74,5 +75,73 @@ public class MealMenuControllerTest {
         newOne.setMenu("rice / kimchi");
         Assertions.assertEquals(menu, newOne);
     }
+
+    @Test
+    public void testGetMealMenu() throws Exception {
+        String url = "/meal/230501/Lunch/Dormitory/Korean";
+        MealMenu menu = new MealMenu(230522, "Lunch", "Korean", "Dormitory",
+                "rice / kimchi");
+        ResultActions actions = mvc.perform(get(url));
+
+        actions.andExpect(status().isOk())
+                .andExpect(jsonPath("$.category", equalTo("Korean")))
+                .andDo(print());
+
+        url = "/meal/230501/Lunch/Dormitory";
+
+        actions = mvc.perform(get(url));
+
+        actions.andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].category", equalTo("Korean")))
+                .andDo(print());
+
+        url = "/meal/230501/Lunch";
+
+        actions = mvc.perform(get(url));
+
+        actions.andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].category", equalTo("Korean")))
+                .andDo(print());
+
+        url = "/meal/230501";
+
+        actions = mvc.perform(get(url));
+
+        actions.andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].category", equalTo("Korean")))
+                .andDo(print());
+    }
+
+//    @Test
+//    public void testGetMealMenuError() throws Exception {
+//        String url = "/meal/230533/Lunch/Dormitory/Korean";
+//        MealMenu menu = new MealMenu(230522, "Lunch", "Korean", "Dormitory",
+//                "rice / kimchi");
+//        ResultActions actions = mvc.perform(get(url));
+//
+//        actions.andExpect(status().isOk())
+//                .andDo(print());
+//
+//        url = "/meal/230533/Lunch/Dormitory";
+//
+//        actions = mvc.perform(get(url));
+//
+//        actions.andExpect(status().isNotFound())
+//                .andDo(print());
+//
+//        url = "/meal/230533/Lunch";
+//
+//        actions = mvc.perform(get(url));
+//
+//        actions.andExpect(status().isNotFound())
+//                .andDo(print());
+//
+//        url = "/meal/230533";
+//
+//        actions = mvc.perform(get(url));
+//
+//        actions.andExpect(status().isNotFound())
+//                .andDo(print());
+//    }
 
 }
