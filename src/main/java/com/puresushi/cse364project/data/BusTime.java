@@ -14,8 +14,8 @@ public class BusTime {
     private String busId;
     private int time;
 
-    public BusTime(int time, String bus) {
+    public BusTime(int time, String busId) {
         this.time = time;
-        this.busId = bus;
+        this.busId = busId;
     }
 }
