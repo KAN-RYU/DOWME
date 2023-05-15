@@ -1,6 +1,5 @@
-package com.puresushi.cse364project;
+package com.puresushi.cse364project.exception;
 
-import com.puresushi.cse364project.data.Movie;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

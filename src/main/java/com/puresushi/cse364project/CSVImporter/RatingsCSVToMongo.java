@@ -27,7 +27,7 @@ public class RatingsCSVToMongo {
 
     public void readRatingCSV() {
         try {
-            CSVReader csvReader = new CSVReader(new InputStreamReader(new FileInputStream("/root/project/DOWME/data/ratings.csv")));
+            CSVReader csvReader = new CSVReader(new InputStreamReader(new FileInputStream("./data/ratings.csv")));
             List<String[]> ratings = csvReader.readAll();
             ArrayList<Rating> newRatings = new ArrayList<Rating>();
             int index = 0;

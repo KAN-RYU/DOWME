@@ -1,4 +1,4 @@
-package com.puresushi.cse364project;
+package com.puresushi.cse364project.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -7,11 +7,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
-public class RatingRangeExceedAdvice {
+public class MealMenuNotFoundAdvice {
     @ResponseBody
-    @ExceptionHandler(RatingRangeExceedException.class)
+    @ExceptionHandler(MealMenuNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String ratingRangeExceedHandler(RatingRangeExceedException exception) {
-        return exception.getMessage();
-    }
+    String mealMenuNotFoundHandler(MealMenuNotFoundException exception) { return exception.getMessage();}
 }
