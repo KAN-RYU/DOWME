@@ -22,7 +22,7 @@ public class MealMenuController {
     @GetMapping("/meal/{date}")
     public List<MealMenu> getMealWithDate(@PathVariable int date) {
         List<MealMenu> mealMenuList = mealMenuRepository.findByDate(date);
-        if (mealMenuList.isEmpty()) new MealMenuNotFoundException(String.valueOf(date));
+        if (mealMenuList.isEmpty()) throw new MealMenuNotFoundException(String.valueOf(date));
         return mealMenuList;
     }
 
@@ -30,7 +30,7 @@ public class MealMenuController {
     @GetMapping("/meal/{date}/{time}")
     public List<MealMenu> getMealWithDateAndTime(@PathVariable int date, @PathVariable String time) {
         List<MealMenu> mealMenuList = mealMenuRepository.findByDateAndTime(date, time);
-        if (mealMenuList.isEmpty()) new MealMenuNotFoundException(String.valueOf(date) + " " + time);
+        if (mealMenuList.isEmpty()) throw new MealMenuNotFoundException(String.valueOf(date) + " " + time);
         return mealMenuList;
     }
 
@@ -38,7 +38,7 @@ public class MealMenuController {
     @GetMapping("/meal/{date}/{time}/{restaurant}")
     public List<MealMenu> getMealWithDateAndTimeAndRestaurant(@PathVariable int date, @PathVariable String time, @PathVariable String restaurant) {
         List<MealMenu> mealMenuList = mealMenuRepository.findByDateAndTimeAndRestaurant(date, time, restaurant);
-        if (mealMenuList.isEmpty()) new MealMenuNotFoundException(String.valueOf(date) + " " + time + " " + restaurant);
+        if (mealMenuList.isEmpty()) throw new MealMenuNotFoundException(String.valueOf(date) + " " + time + " " + restaurant);
         return mealMenuList;
     }
 
@@ -48,7 +48,7 @@ public class MealMenuController {
                                                                    @PathVariable String restaurant,
                                                                    @PathVariable String category) {
         MealMenu m = mealMenuRepository.findByDateAndTimeAndRestaurantAndCategory(date, time, restaurant, category);
-        if (m == null) new MealMenuNotFoundException(String.valueOf(date) + " " + time + " " + restaurant + " " + category);
+        if (m == null) throw new MealMenuNotFoundException(String.valueOf(date) + " " + time + " " + restaurant + " " + category);
         return m;
     }
 
