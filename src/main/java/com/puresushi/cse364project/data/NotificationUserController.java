@@ -71,5 +71,37 @@ public class NotificationUserController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/sendpush")
+    public ResponseEntity sendNotification(@RequestParam int time) {
+        log.info(String.valueOf(time));
+        List<NotificationUser> userList = notificationUserRepository.findAll();
+        for (NotificationUser notificationUser: userList) {
+            List<NotiTime> timeTable = notificationUser.getTimeTable();
+            for(NotiTime notiTime: timeTable) {
+                int hour = notiTime.getTime()/100 - time/100;
+                int minute = notiTime.getTime()%100 - time%100;
+                if (hour * 60 + minute > 10) {
+                    break;
+                }
+                if (notiTime.getTime() - time < 0) {
+                    continue;
+                }
+                FCMNotificationRequest fcmNotificationRequest = FCMNotificationRequest.builder()
+                        .title("Time to Check Attendance!")
+                        .token(notificationUser.getFcmToken())
+                        .body(notiTime.getLectureName())
+                        .build();
+                try {
+                    fcmService.send(fcmNotificationRequest);
+                } catch (ExecutionException e) {
+                    throw new RuntimeException(e);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return ResponseEntity.ok().build();
+    }
+
 
 }
