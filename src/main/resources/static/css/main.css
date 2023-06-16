@@ -14,3 +14,7 @@ a:link:active, a:visited:active {
     color: (internal value);
     text-decoration: none;
 }
+
+.from-select {
+    background-image: none;
+}
