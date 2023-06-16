@@ -1,0 +1,16 @@
+body {
+    font-family: 'KoPub Dotum';
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+a:link, a:visited {
+    color: (internal value);
+    text-decoration: none;
+    font-size: 3rem;
+}
+
+a:link:active, a:visited:active {
+    color: (internal value);
+    text-decoration: none;
+}
