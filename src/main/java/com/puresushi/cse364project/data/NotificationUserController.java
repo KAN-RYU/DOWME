@@ -8,10 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -29,16 +26,27 @@ public class NotificationUserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity registerUser(@RequestBody String token) {
-        if(notificationUserRepository.findByFcmToken(token) == null) {
-            notificationUserRepository.save(new NotificationUser(token));
+    public ResponseEntity registerUser(@RequestBody NotiData notiData) {
+        log.info(notiData.getTimes().toString());
+        final String token = notiData.getToken();
+        NotificationUser user = notificationUserRepository.findByFcmToken(token);
+        if(user == null) {
+            user = new NotificationUser(token);
         }
+        else {
+            user.removeTime();
+        }
+        for (int i = 0; i < notiData.getTimes().size(); i++) {
+            user.addTime(new NotiTime(notiData.getTimes().get(i),
+                    notiData.getLectureNames().get(i)));
+        }
+        notificationUserRepository.save(user);
+
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/logout")
-    public ResponseEntity logout(@RequestBody String token) {
-
+    @PostMapping("/unsubscribe")
+    public ResponseEntity unsubscribe(@RequestBody String token) {
         notificationUserRepository.deleteByFcmToken(token);
         return ResponseEntity.ok().build();
     }

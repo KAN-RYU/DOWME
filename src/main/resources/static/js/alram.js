@@ -7,6 +7,10 @@ const firebaseConfig = {
     messagingSenderId: "911730688701",
     appId: "1:911730688701:web:cc4bc7f75b94a23e75add4"
 };
+firebase.initializeApp(firebaseConfig);
+
+let lectureNames = []
+let times = []
 
 function addRow() {
     let table = document.getElementById("lectureItems");
@@ -68,15 +72,24 @@ async function initServiceWorker() {
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/firebase-messaging-sw.js')
             .then(registration => {
-                firebase.initializeApp(firebaseConfig);
-
                 const messaging = firebase.messaging();
                 messaging.requestPermission()
                     .then(function () {
                         return messaging.getToken();
                     })
                     .then(async function (token) {
-                        await fetch('/register', { method: 'post', body: token })
+                        data = {
+                            'token': token,
+                            'times': times,
+                            'lectureNames': lectureNames
+                        }
+                        await fetch('/register', {
+                            method: 'post',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                        })
                         messaging.onMessage(payload => {
                             const title = payload.notification.title
                             const options = {
@@ -87,7 +100,7 @@ async function initServiceWorker() {
                             })
                         })
                     })
-                    .catch(function(err) {
+                    .catch(function (err) {
                         console.log(err);
                     })
             })
@@ -95,19 +108,59 @@ async function initServiceWorker() {
 }
 
 function submitSchedule() {
+    times = []
+    lectureNames = []
     let table = document.getElementById("lectureItems");
     let rows = table.children
     for (let i = 0; i < rows.length; i++) {
         let row = rows[i];
         let name = (row.children[0].children[0]).value;
-        let mon = (row.children[1].children[0]).checked;
-        let tue = (row.children[2].children[0]).checked;
-        let wed = (row.children[3].children[0]).checked;
-        let thu = (row.children[4].children[0]).checked;
-        let fri = (row.children[5].children[0]).checked;
         let time = (row.children[6].children[0]).value;
-        console.log(time);
+        for (let j = 1; j <= 5; j++) {
+            if ((row.children[j].children[0]).checked) {
+                let realtime = 0;
+                switch (time) {
+                    case '1':
+                        realtime = 900;
+                        break;
+                    case '2':
+                        realtime = 1030;
+                        break;
+                    case '3':
+                        realtime = 1300;
+                        break;
+                    case '4':
+                        realtime = 1430;
+                        break;
+                    case '5':
+                        realtime = 1600;
+                        break;
+                    case '6':
+                        realtime = 1730;
+                        break;
+                    case '7':
+                        realtime = 1900;
+                        break;
+                }
+                realtime = j * 10000 + realtime;
+                times.push(realtime);
+                lectureNames.push(name);
+            }
+        }
     }
 
     initServiceWorker();
+}
+
+async function unsubscribe() {
+    const messaging = firebase.messaging();
+    messaging.requestPermission()
+        .then(function () {
+            return messaging.getToken();
+        })
+        .then(async function (token) {
+            const response = await fetch('/unsubscribe', { method: 'post', body: token })
+            console.log(response);
+        })
+    return;
 }
