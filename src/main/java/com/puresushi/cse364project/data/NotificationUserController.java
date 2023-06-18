@@ -139,7 +139,7 @@ public class NotificationUserController {
         return ResponseEntity.ok().build();
     }
 
-    @Scheduled(cron = "0 31/10 8-19 * * *")
+    @Scheduled(cron = "0 1/10 8-19 * * *")
     public void runPush() {
         log.info("Scheduled run: send push service");
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
