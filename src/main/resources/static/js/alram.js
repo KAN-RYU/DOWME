@@ -164,3 +164,96 @@ async function unsubscribe() {
         })
     return;
 }
+
+function realtimeTovalue(realtime) {
+    switch (realtime) {
+        case 900:
+            return 1;
+        case 1030:
+            return 2;
+        case 1300:
+            return 3;
+        case 1430:
+            return 4;
+        case 1600:
+            return 5;
+        case 1730:
+            return 6;
+        case 1900:
+            return 7;
+    }
+    return 0;
+}
+
+function initializeTable() {
+    if (Notification.permission === 'default') return;
+    const messaging = firebase.messaging();
+    messaging.requestPermission()
+        .then(function () {
+            return messaging.getToken();
+        })
+        .then(async function (token) {
+            const response = await fetch('/notiuser/' + token, { method: 'get' })
+            return (response.json());
+        })
+        .then(function (timeTable) {
+            if (timeTable.lectureNames.length === 0) return;
+            let table = document.getElementById("lectureItems");
+
+            let row = table.children[0];
+            let currentLecture = timeTable.lectureNames[0];
+            (row.children[0].children[0]).value = currentLecture;
+            (row.children[6].children[0]).value = realtimeTovalue(timeTable.times[0]%10000);
+
+            for (let i = 0; i < timeTable.times.length; i++) {
+                if (currentLecture !== timeTable.lectureNames[i]) {
+                    row = addRow();
+                    currentLecture = timeTable.lectureNames[i];
+                    (row.children[0].children[0]).value = currentLecture;
+                    (row.children[6].children[0]).value = realtimeTovalue(timeTable.times[i]%10000);
+                }
+                (row.children[parseInt(timeTable.times[i]/10000)].children[0]).checked = true;
+            }
+
+            let name = (row.children[0].children[0]).value;
+            let time = (row.children[6].children[0]).value;
+            for (let j = 1; j <= 5; j++) {
+                if ((row.children[j].children[0]).checked) {
+                    let realtime = 0;
+                    switch (time) {
+                        case '1':
+                            realtime = 900;
+                            break;
+                        case '2':
+                            realtime = 1030;
+                            break;
+                        case '3':
+                            realtime = 1300;
+                            break;
+                        case '4':
+                            realtime = 1430;
+                            break;
+                        case '5':
+                            realtime = 1600;
+                            break;
+                        case '6':
+                            realtime = 1730;
+                            break;
+                        case '7':
+                            realtime = 1900;
+                            break;
+                    }
+                    realtime = j * 10000 + realtime;
+                    times.push(realtime);
+                    lectureNames.push(name);
+                }
+            }
+
+        })
+        .catch(function (err) {
+            console.log("Error on initializing");
+        })
+    return;
+}
+
+initializeTable();

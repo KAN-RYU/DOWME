@@ -4,12 +4,21 @@ import com.puresushi.cse364project.common.firebase.FCMNotificationRequest;
 import com.puresushi.cse364project.common.firebase.FCMService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.checkerframework.checker.units.qual.A;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -49,6 +58,33 @@ public class NotificationUserController {
     public ResponseEntity unsubscribe(@RequestBody String token) {
         notificationUserRepository.deleteByFcmToken(token);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/notiuser/{token}")
+    public NotiData getUserInformation(@PathVariable String token) {
+        NotificationUser user = notificationUserRepository.findByFcmToken(token);
+        if (user == null) {
+            return new NotiData(token, new ArrayList<>(), new ArrayList<>());
+        }
+        List<Integer> times = new ArrayList<>();
+        List<String> lectureNames = new ArrayList<>();
+        List<NotiTime> timeTable = user.getTimeTable();
+
+        Comparator<NotiTime> comparator = new Comparator<NotiTime>() {
+            @Override
+            public int compare(NotiTime o1, NotiTime o2) {
+                return o1.getLectureName().compareTo(o2.getLectureName());
+            }
+        };
+        Collections.sort(timeTable, comparator);
+
+        for (NotiTime data: timeTable) {
+            times.add(data.getTime());
+            lectureNames.add(data.getLectureName());
+        }
+
+        NotiData result = new NotiData(token, times, lectureNames);
+        return result;
     }
 
     @GetMapping("/test")
@@ -101,6 +137,17 @@ public class NotificationUserController {
             }
         }
         return ResponseEntity.ok().build();
+    }
+
+    @Scheduled(cron = "0 31/10 8-19 * * *")
+    public void runPush() {
+        log.info("Scheduled run: send push service");
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        int hour = now.getHour();
+        int minute = now.getMinute();
+        int dayOfWeek = now.getDayOfWeek().getValue();
+        int time = dayOfWeek*10000 + hour*100 + minute;
+        sendNotification(time);
     }
 
 
