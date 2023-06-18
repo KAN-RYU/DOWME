@@ -6,99 +6,63 @@ UNIST 2023S1 CSE36401 Software Engineering Group 10
 
 ***
 
-Milestone 2 Done
+Milestone 3 Done
 
 ***
 
-## SSH Authorization before running "run.sh"
-In accessing to Github URL, we are using SSH URL (git@github.com:KAN-RYU/DOWME.git).
-So when you start a Docker image created from the Dockerfile and run.sh, you will need a SSH key to get access to Git.
+![HomePage](./images/home.png)
 
-Before running 'sh run.sh', please create and authorize the SSH Key of the Docker image, by doing the following.
+### Just tap the button what you want!
+
+DOWME is helper web application for the UNIST members. 
+It provides information about the bus departing soon, searching meal menus, notification for attendance check.
+
+***
+
+## Bus Time
+
+![Bus](./images/bus.png)
+
+When open this page, you can see the bus timetable with sorted by order of departing time.
+
+## Meal Search
+
+![Meal](./images/meal.png)
+
+You can search specific meal menu with this page. Just type the menu name and tap the search button
+
+## Attendance Check Notification
+
+![Noti](./images/noti.png)
+
+Submit your own lecture timetable! Recent web-push technology gives you a push notification.
+When you submit the timetable, browser requests the permission of notification service. PLEASE ALLOW IT!
+
+You can receive push notification 10 minutes before class start.
+
+Server will automatically send push notification about 10 minutes for valid member.
+If you don't connect with 'localhost' or '127.x.y.z' push service can't send notification because of security issue.
+If you run the server with SSL setup, it will fine.
+
+***
+
+## Specify
+
+Web standard limit the function on http, notification service will only be activated on https.
+
+If you want to test push notification, try this link.
 
 ```
-root@<containerID>:~/project# ssh-keygen -t rsa
-root@<containerID>:~/project# vi ~/.ssh/id_rsa.pub
+http://{url for app}/sendpush?time=31350
+
+param:
+    time: 5-digits number. dayCode + hour + minute
+        dayCode: 1-5 to Mon-Fri
+        hour: 0-23
+        minute: 0-59
+        (31350 means wednesday, 13:50)
+        
+Expected behaviour:
+    It send a push notification like the time is the entered one.
+    So you can test with 31350 if you submit wednesday, 14:00 lecture.
 ```
-
-Then, copy the content of vim editor, as SSH Key. Upload the SSH Key in your 'Setting' in github account.
-After SSH Key is uploaded in your personal account, our github repository will be accessable.
-
-***
-
-## Bus Information
-
-Get All Bus Ids.
-
-`curl -X GET http://localhost:8080/bus/`
-
-Get Time table of given bus id
-
-`curl -X GET http://localhost:8080/bus/times/304(Yul-li)`
-
-Get 10 Bus IDs depart soon.
-
-`curl -X GET http://localhost:8080/bus/depart/1600`
-
-Add duplicate bus time ignored.
-
-`curl -X POST http://localhost:8080/bus -H 'Content-type:application/json' -d '{"busId": "304(Yul-li)", "time": "0850"}'`
-
-Add new Bus time
-
-`curl -X POST http://localhost:8080/bus -H 'Content-type:application/json' -d '{"busId": "304(Yul-li)", "time": "2100"}'`
-
-Add new Bus time
-
-`curl -X POST http://localhost:8080/bus -H 'Content-type:application/json' -d '{"busId": "777(Lucky)", "time": "0700"}'`
-
-Add new bus time with wrong time retrieve error
-
-`curl -X POST http://localhost:8080/bus -H 'Content-type:application/json' -d '{"busId": "777(Lucky)", "time": "0788"}'`
-
-Delete Bus time data
-
-`curl -X DELETE http://localhost:8080/bus/304(Yul-li)/0850`
-
-***
-## Meal Information
-
-Get Meal data from date
-
-`curl -X GET http://localhost:8080/meal/230501`
-
-Get Meal data from date and time
-
-`curl -X GET http://localhost:8080/meal/230501/Lunch`
-
-Get Meal data from date and time and restaurant
-
-`curl -X GET http://localhost:8080/meal/230501/Lunch/Dormitory`
-
-Get Meal data with specific menu
-
-`curl -X GET http://localhost:8080/meal/search/Iced+Tea`
-
-Can Update or Add Menu
-
-`curl -X PUT http://localhost:8080/meal -H 'Content-type:application/json' -d '{"date": "230512", "time": "Lunch", "category": "Korean", "restaurant": "Dormitory", "menu": "Corn rice / Cream soup / Chicken Cheese Cutlet & Sauce / Spaghetti Salad / COKE / Kimchi"}'`
-
-***
-
-## Attendance Notification User
-
-Add New Users
-
-`curl -X POST http://localhost:8080/attendance -H 'Content-type:application/json' -d '{"guid": "facdfe", "userId": "1"}'`
-
-`curl -X POST http://localhost:8080/attendance -H 'Content-type:application/json' -d '{"guid": "abefff", "userId": "2"}'`
-
-Add Lecture to user
-
-`curl -X POST http://localhost:8080/attendance/2/4`
-
-`curl -X POST http://localhost:8080/attendance/2/5`
-
-Get user data
-
-`curl -X GET http://localhost:8080/attendance/2`
