@@ -11,6 +11,7 @@ firebase.initializeApp(firebaseConfig);
 
 let lectureNames = []
 let times = []
+let flag = false
 
 function addRow() {
     let table = document.getElementById("lectureItems");
@@ -70,9 +71,10 @@ function deleteRow(current) {
 
 async function initServiceWorker() {
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/firebase-messaging-sw.js')
+        navigator.serviceWorker.register('firebase-messaging-sw.js')
             .then(registration => {
                 const messaging = firebase.messaging();
+                if (!flag) messaging.useServiceWorker(registration)
                 messaging.requestPermission()
                     .then(function () {
                         return messaging.getToken();
@@ -83,7 +85,7 @@ async function initServiceWorker() {
                             'times': times,
                             'lectureNames': lectureNames
                         }
-                        await fetch('/register', {
+                        await fetch('./register', {
                             method: 'post',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -159,7 +161,7 @@ async function unsubscribe() {
             return messaging.getToken();
         })
         .then(async function (token) {
-            const response = await fetch('/unsubscribe', { method: 'post', body: token })
+            const response = await fetch('./unsubscribe', { method: 'post', body: token })
             console.log(response);
         })
     return;
@@ -188,12 +190,17 @@ function realtimeTovalue(realtime) {
 function initializeTable() {
     if (Notification.permission === 'default') return;
     const messaging = firebase.messaging();
+    navigator.serviceWorker.ready
+        .then(a => {
+            flag = true;
+            messaging.useServiceWorker(a);
+        });
     messaging.requestPermission()
         .then(function () {
             return messaging.getToken();
         })
         .then(async function (token) {
-            const response = await fetch('/notiuser/' + token, { method: 'get' })
+            const response = await fetch('./notiuser/' + token, { method: 'get' })
             return (response.json());
         })
         .then(function (timeTable) {
@@ -203,16 +210,16 @@ function initializeTable() {
             let row = table.children[0];
             let currentLecture = timeTable.lectureNames[0];
             (row.children[0].children[0]).value = currentLecture;
-            (row.children[6].children[0]).value = realtimeTovalue(timeTable.times[0]%10000);
+            (row.children[6].children[0]).value = realtimeTovalue(timeTable.times[0] % 10000);
 
             for (let i = 0; i < timeTable.times.length; i++) {
                 if (currentLecture !== timeTable.lectureNames[i]) {
                     row = addRow();
                     currentLecture = timeTable.lectureNames[i];
                     (row.children[0].children[0]).value = currentLecture;
-                    (row.children[6].children[0]).value = realtimeTovalue(timeTable.times[i]%10000);
+                    (row.children[6].children[0]).value = realtimeTovalue(timeTable.times[i] % 10000);
                 }
-                (row.children[parseInt(timeTable.times[i]/10000)].children[0]).checked = true;
+                (row.children[parseInt(timeTable.times[i] / 10000)].children[0]).checked = true;
             }
 
             let name = (row.children[0].children[0]).value;

@@ -4,6 +4,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import com.puresushi.cse364project.data.MealMenu;
 import com.puresushi.cse364project.data.MealMenuRepository;
+import org.springframework.util.ResourceUtils;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -17,7 +18,7 @@ public class MealMenuCSVToMongo {
 
     public void readMealMenuCSV() {
         try {
-            CSVReader csvReader = new CSVReader(new InputStreamReader(new FileInputStream("./data/menu.csv")));
+            CSVReader csvReader = new CSVReader(new InputStreamReader(new FileInputStream(ResourceUtils.getFile("classpath:data/menu.csv"))));
 
             do {
                 String[] mealMenuTable = csvReader.readNext();

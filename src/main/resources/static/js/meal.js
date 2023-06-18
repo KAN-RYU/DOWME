@@ -1,7 +1,7 @@
 let url = window.location.origin;
 
 async function searchMeal(menu) {
-    const response = await fetch(url + '/meal/search/' + menu, {method: 'GET'})
+    const response = await fetch('./meal/search/' + menu, {method: 'GET'})
     return response.json();
 }
 

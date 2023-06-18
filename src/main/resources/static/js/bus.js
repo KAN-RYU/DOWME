@@ -9,7 +9,7 @@ function padZero(num) {
 }
 
 async function getBusSoon(time) {
-    const response = await fetch(url + '/bus/depart/' + currentTime, {method: 'GET'})
+    const response = await fetch('./bus/depart/' + currentTime, {method: 'GET'})
     return response.json();
 }
 
